@@ -16,7 +16,6 @@ Release:	%{release}
 License:	GPL
 Group:		System/Libraries
 Source:		%{oname}-%{scintilla}-gpl-%{version}.tar.bz2
-#Patch:		%{name}-Mandrakization.patch.bz2
 URL:		http://www.riverbankcomputing.co.uk/qscintilla
 BuildRequires:	qt3-devel >= 3.3.7
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
@@ -68,7 +67,6 @@ Language files for qscintilla.
 
 %prep 
 %setup -qn %{oname}-%{scintilla}-gpl-%{version}
-#%patch -p1
 
 %build
 export QTDIR=%{qtdir}
