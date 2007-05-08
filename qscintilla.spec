@@ -52,6 +52,7 @@ Group:		Development/KDE and Qt
 Requires:	%{libname} = %{version}-%{release}
 Provides:	lib%{name}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
+Obsoletes:	%mklibname -d 6
 
 %description -n %{libnamedev}
 This packages contains the libraries, include and other files
@@ -72,18 +73,21 @@ Language files for qscintilla.
 export QTDIR=%{qtdir}
 cd qt
 %{qtdir}/bin/qmake -o Makefile qscintilla.pro
-%make DESDIR=%{buildroot}/$QTDIR/%{_lib}
+
+# x86_64 bs fixes
+sed -i '415d' Makefile
+sed -i '424d' Makefile
+#
+
+%make first DESTDIR=%{buildroot}/%{qtdir}/%{_lib}
 
 %install
-# Copy headers
 rm -fr %{buildroot}
-#mkdir -p $RPM_BUILD_ROOT/%{qtdir}/{include,translations,%_lib}
-#cp qt/qextscintilla*.h $RPM_BUILD_ROOT/%{qtdir}/include/
-#cp qt/qscintilla*.qm $RPM_BUILD_ROOT/%{qtdir}/translations/
-cd qt
-make install INSTALL_ROOT=%{buildroot}
-mkdir %{buildroot}/%{qtdir}/%{_lib}
-cp -d *.so* %{buildroot}/%{qtdir}/%{_lib}/
+
+mkdir -p %{buildroot}/%{qtdir}/{include,translations,%{_lib}}
+cp qt/qextscintilla*.h %{buildroot}/%{qtdir}/include/
+cp qt/qscintilla*.qm %{buildroot}/%{qtdir}/translations/
+cp -d qt/*.so* %{buildroot}/%{qtdir}/%{_lib}/
 
 %clean
 rm -rf %{buildroot}
@@ -92,15 +96,15 @@ rm -rf %{buildroot}
 %postun -n %{libname} -p /sbin/ldconfig
 
 %files -n %{libnamedev}
-%defattr(-, root, root, 755)
+%defattr(644,root,root,755)
 %{qtdir}/include/*
 %{qtdir}/%{_lib}/libqscintilla.so
 
 %files -n %{libname}
-%defattr(-, root, root, 755)
+%defattr(644,root,root,755)
 %doc ChangeLog LICENSE NEWS README doc	
-%{qtdir}/%{_lib}/libqscintilla.so.%{major}*
+%attr(755,root,root) %{qtdir}/%{_lib}/libqscintilla.so.%{major}*
 
 %files translations
-%defattr(-,root,root)
+%defattr(644,root,root,755)
 %{qtdir}/translations/qscintilla*.qm
