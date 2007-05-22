@@ -1,18 +1,16 @@
 %define oname 	QScintilla
-%define version 1.7.1
-%define release %mkrel 1
 
 %define scintilla 1.71
 %define qtdir /usr/lib/qt3
 
 %define major 7
 %define libname %mklibname %{name} %{major}
-%define libnamedev %mklibname %name %major -d
+%define libnamedev %mklibname %{name} -d
 
-Summary:	QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
-Version:	%{version}
-Release:	%{release}
+Summary:	QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor class
+Version:	1.7.1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Libraries
 Source:		%{oname}-%{scintilla}-gpl-%{version}.tar.bz2
@@ -50,9 +48,9 @@ multiple foreground and background colours and multiple fonts.
 Summary:	Libraries, include and other files to develop applications with QScintilla
 Group:		Development/KDE and Qt
 Requires:	%{libname} = %{version}-%{release}
-Provides:	lib%{name}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
-Obsoletes:	%mklibname -d 6
+Obsoletes:	%{_lib}%{name}6-devel
+Obsoletes:	%{_lib}%{name}7-devel
 
 %description -n %{libnamedev}
 This packages contains the libraries, include and other files
