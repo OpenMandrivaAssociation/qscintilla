@@ -3,7 +3,7 @@
 Name: qscintilla
 Summary: QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.1
-Release: %mkrel 1
+Release: %mkrel 2
 License: GPL
 Group: System/Libraries
 Source:	QScintilla-%{scintilla}-gpl-%{version}.tar.gz
@@ -52,7 +52,7 @@ multiple foreground and background colours and multiple fonts.
 
 #--------------------------------------------------------------
 
-%define libqs3dev %mklibname -d qscintilla-qt3_ 
+%define libqs3dev %mklibname -d qscintilla-qt3
 
 %package -n %libqs3dev
 Summary: Libraries, include and other files to develop applications with QScintilla for Qt3
@@ -60,6 +60,7 @@ Group: Development/KDE and Qt
 Requires: %libqs3 = %{version}-%{release}
 Provides: %{name}-devel = %{version}-%{release}
 Provides: %{name}-qt3-devel = %{version}-%{release}
+Obsoletes: %{_lib}qscintilla-qt3_-devel
 
 %description -n %libqs3dev
 This packages contains the libraries, include and other files
@@ -100,13 +101,14 @@ multiple foreground and background colours and multiple fonts.
 
 #--------------------------------------------------------------
 
-%define libqs4dev %mklibname -d qscintilla-qt4_ 
+%define libqs4dev %mklibname -d qscintilla-qt4
 
 %package -n %libqs4dev
 Summary: Libraries, include and other files to develop applications with QScintilla for Qt3
 Group: Development/KDE and Qt
 Requires: %libqs4 = %{version}-%{release}
 Provides: %{name}-qt4-devel = %{version}-%{release}
+Obsoletes: %{_lib}qscintilla-qt4_-devel
 
 %description -n %libqs4dev
 This packages contains the libraries, include and other files
