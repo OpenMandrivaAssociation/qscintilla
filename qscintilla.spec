@@ -8,6 +8,7 @@ License: GPL
 Group: System/Libraries
 Source0: QScintilla-%{scintilla}-gpl-%{version}.tar.gz
 Patch0: QScintilla-1.73-gpl-2.1-libdir.patch
+Patch1: QScintilla-1.73-gpl-2.1-designer-qt4.patch
 URL: http://www.riverbankcomputing.co.uk/qscintilla
 BuildRequires: qt3-devel
 BuildRequires: python-sip >= 1:4.7
@@ -174,6 +175,7 @@ QScintilla doc.
 %prep 
 %setup -qn QScintilla-%{scintilla}-gpl-%{version}
 %patch0 -p1 -b .libbuild
+%patch1 -p1 -b .desginer
 
 %build
 # We will build both qt3 and qt4 qscintilla !
