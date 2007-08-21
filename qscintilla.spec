@@ -6,9 +6,12 @@ Version: 2.1
 Release: %mkrel 2
 License: GPL
 Group: System/Libraries
-Source:	QScintilla-%{scintilla}-gpl-%{version}.tar.gz
+Source0: QScintilla-%{scintilla}-gpl-%{version}.tar.gz
+Patch0: QScintilla-1.73-gpl-2.1-libdir.patch
 URL: http://www.riverbankcomputing.co.uk/qscintilla
 BuildRequires: qt3-devel
+BuildRequires: python-sip >= 1:4.7
+BuildRequires: python-qt >= 1:3.16.0
 BuildRequires: qt4-devel >= 2:4.3.1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
@@ -48,7 +51,6 @@ multiple foreground and background colours and multiple fonts.
 %defattr(644,root,root,755)
 %attr(755,root,root) %{qt3lib}/*.so.*
 %{qt3dir}/translations/qscintilla*.qm
-%exclude %{qt3dir}/qsci/api/python
 
 #--------------------------------------------------------------
 
@@ -97,7 +99,6 @@ multiple foreground and background colours and multiple fonts.
 %defattr(644,root,root,755)
 %attr(755,root,root) %{qt4lib}/*.so.*
 %{qt4dir}/translations/qscintilla*.qm
-%exclude %{qt4dir}/qsci/api/python
 
 #--------------------------------------------------------------
 
@@ -118,6 +119,42 @@ you can use to develop applications with QScintilla.
 %defattr(644,root,root,755)
 %{qt4dir}/include/*
 %{qt4lib}/*.so
+%{qt4plugins}/designer/*
+
+#--------------------------------------------------------------
+
+%package -n python-qt3-qscintilla
+Summary: Python qt3 QScintilla bindings
+Group: Development/KDE and Qt
+Requires: python-qt
+Requires: %libqs3
+
+%description -n python-qt3-qscintilla
+Python qt3 QScintilla bindings.
+
+%files -n python-qt3-qscintilla
+%defattr(644,root,root,755)
+%_datadir/sip/qsci
+%qt3dir/qsci
+%py_platsitedir/qsci.so
+
+#--------------------------------------------------------------
+
+%package -n python-qt4-qscintilla
+Summary: Python qt4 QScintilla bindings
+Group: Development/KDE and Qt
+Requires: python-qt4-core
+Requires: python-qt4-gui
+Requires: %libqs4
+
+%description -n python-qt4-qscintilla
+Python qt4 QScintilla bindings.
+
+%files -n python-qt4-qscintilla 
+%defattr(644,root,root,755)
+%_datadir/sip/PyQt4
+%qt4dir/qsci
+%py_platsitedir/PyQt4/Qsci.so
 
 #--------------------------------------------------------------
 
@@ -132,34 +169,66 @@ QScintilla doc.
 %defattr(644,root,root,755)
 %doc ChangeLog LICENSE NEWS README doc	
 
+#--------------------------------------------------------------
+
 %prep 
 %setup -qn QScintilla-%{scintilla}-gpl-%{version}
+%patch0 -p1 -b .libbuild
 
 %build
 # We will build both qt3 and qt4 qscintilla !
-export QTDIR=%qt3dir
-pushd Qt3
-    qmake -o Makefile qscintilla.pro
+pushd Qt3 
+    export QTDIR=%qt3dir
+    qmake DESTDIR=%buildroot/%{qt3lib} qscintilla.pro
     %make 
 popd
 
 pushd Qt4
     export QTDIR=%qt4dir
     export PATH=%qt4dir/bin:$PATH
-    qmake -o Makefile qscintilla.pro
-    %make
+    qmake DESTDIR=%buildroot/%{qt4lib} qscintilla.pro
+    %make 
 popd
+
+pushd designer-Qt4
+    qmake designer.pro
+    make
+popd
+
+
 
 %install
 rm -fr %{buildroot}
 mkdir -p %buildroot/{%qt3lib,%qt4lib}
 pushd Qt3
-    cp -d *.so* %buildroot/%qt3lib
     make INSTALL_ROOT=%buildroot install
 popd
+
+pushd Python
+    export QTDIR=%qt3dir
+    python configure.py -p 3 \
+        -n ../Qt3 \
+        -o %buildroot/%{qt3lib} 
+    %make 
+    make DESTDIR=%buildroot install
+popd
+
 pushd Qt4
-    cp -d *.so* %buildroot/%qt4lib
     make INSTALL_ROOT=%buildroot install
+popd
+
+pushd designer-Qt4
+    make INSTALL_ROOT=%buildroot install
+popd
+
+pushd Python
+    export QTDIR=%qt4dir
+    export PATH=%qt4dir/bin:$PATH
+    python configure.py \
+        -n ../Qt4 \
+        -o %buildroot/%{qt4lib} 
+    %make 
+    make DESTDIR=%buildroot install
 popd
 
 %clean
