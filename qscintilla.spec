@@ -10,9 +10,10 @@ Source0: QScintilla-%{scintilla}-gpl-%{version}.tar.gz
 Patch0: QScintilla-1.73-gpl-2.1-libdir.patch
 URL: http://www.riverbankcomputing.co.uk/qscintilla
 BuildRequires: qt3-devel
+BuildRequires: qt4-devel >= 2:4.3.1
 BuildRequires: python-sip >= 1:4.7
 BuildRequires: python-qt >= 1:3.16.0
-BuildRequires: qt4-devel >= 2:4.3.1
+%py_requires -d
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
