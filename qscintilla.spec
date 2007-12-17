@@ -15,7 +15,6 @@ BuildRequires: python-sip >= 1:4.7
 BuildRequires: python-qt >= 1:3.16.0
 BuildRequires: python-qt4-devel
 %py_requires -d
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 As well as features found in standard text editing components,
