@@ -1,7 +1,7 @@
 %define scintilla 1.73
 
 Name: qscintilla
-Summary: QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor class
+Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.1
 Release: %mkrel 3
 License: GPL
@@ -32,7 +32,7 @@ multiple foreground and background colours and multiple fonts.
 %define libqs3 %mklibname qscintilla-qt3_ 2
 
 %package -n %libqs3
-Summary: QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor class
+Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Group: System/Libraries
 Obsoletes: qscintilla-translations
 
@@ -80,7 +80,7 @@ you can use to develop applications with QScintilla.
 %define libqs4 %mklibname qscintilla-qt4_ 2
 
 %package -n %libqs4
-Summary: QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor class
+Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Group: System/Libraries
 Obsoletes: qscintilla-translations
 
