@@ -7,7 +7,7 @@ Release: %mkrel 1
 License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
-Patch0: QScintilla-1.73-gpl-2.1-libdir.patch
+Patch0: QScintilla-gpl-2.2-libdir.patch
 URL: http://www.riverbankcomputing.co.uk/qscintilla
 BuildRequires: qt3-devel
 BuildRequires: qt4-devel >= 2:4.3.1
@@ -175,7 +175,7 @@ QScintilla doc.
 
 %prep 
 %setup -qn QScintilla-gpl-%{version}
-#%patch0 -p1 -b .libbuild
+%patch0 -p1 -b .libbuild
 
 %build
 # We will build both qt3 and qt4 qscintilla !
