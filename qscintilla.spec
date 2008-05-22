@@ -2,11 +2,11 @@
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.1
-Release: %mkrel 5
-License: GPL
+Version: 2.2
+Release: %mkrel 1
+License: GPLv2+
 Group: System/Libraries
-Source0: QScintilla-%{scintilla}-gpl-%{version}.tar.gz
+Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
 Patch0: QScintilla-1.73-gpl-2.1-libdir.patch
 URL: http://www.riverbankcomputing.co.uk/qscintilla
 BuildRequires: qt3-devel
@@ -169,33 +169,32 @@ QScintilla doc.
 
 %files doc
 %defattr(644,root,root,755)
-%doc ChangeLog LICENSE NEWS README doc	
+%doc ChangeLog NEWS README doc	
 
 #--------------------------------------------------------------
 
 %prep 
-%setup -qn QScintilla-%{scintilla}-gpl-%{version}
-%patch0 -p1 -b .libbuild
+%setup -qn QScintilla-gpl-%{version}
+#%patch0 -p1 -b .libbuild
 
 %build
 # We will build both qt3 and qt4 qscintilla !
 pushd Qt3 
     export QTDIR=%qt3dir
-    qmake DESTDIR=%buildroot/%{qt3lib} qscintilla.pro
+    %{qt3dir}/bin/qmake DESTDIR=%buildroot/%{qt3lib} qscintilla.pro
     %make 
 popd
 
 pushd Qt4
     export QTDIR=%qt4dir
-    export PATH=%qt4dir/bin:$PATH
-    qmake DESTDIR=%buildroot/%{qt4lib} qscintilla.pro
+    %{qt4dir}/bin/qmake DESTDIR=%buildroot/%{qt4lib} qscintilla.pro
     %make 
 popd
 
 pushd designer-Qt4
     echo "INCLUDEPATH += ../Qt4" >> designer.pro
     echo "LIBS += -L%buildroot/%{qt4lib}" >> designer.pro
-    qmake designer.pro
+    %{qt4dir}/bin/qmake designer.pro
     make
 popd
 
