@@ -1,16 +1,21 @@
+%define with_qt3 0
+%{?_with_qt3: %{expand: %%global with_qt3 1}}
+
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.2
-Release: %mkrel 2
+Release: %mkrel 3
 License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
 Patch0: QScintilla-gpl-2.2-libdir.patch
 URL: http://www.riverbankcomputing.co.uk/qscintilla
+%if %{with_qt3}
 BuildRequires: qt3-devel
+BuildRequires: python-qt >= 1:3.16.0
+%endif # with_qt3
 BuildRequires: qt4-devel >= 2:4.3.1
 BuildRequires: python-sip >= 1:4.7
-BuildRequires: python-qt >= 1:3.16.0
 BuildRequires: python-qt4-devel
 %py_requires -d
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
@@ -26,6 +31,8 @@ editors, allowing the use of proportional fonts, bold and italics,
 multiple foreground and background colours and multiple fonts.
 
 #--------------------------------------------------------------
+
+%if %{with_qt3}
 
 %define libqs3 %mklibname qscintilla-qt3_ 2
 
@@ -62,6 +69,7 @@ Group: Development/KDE and Qt
 Requires: %libqs3 = %{version}-%{release}
 Provides: %{name}-devel = %{version}-%{release}
 Provides: %{name}-qt3-devel = %{version}-%{release}
+Provides: qscintilla-qt3-devel = %{version}-%{release}
 Obsoletes: %{_lib}qscintilla-qt3_-devel
 
 %description -n %libqs3dev
@@ -72,6 +80,25 @@ you can use to develop applications with QScintilla.
 %defattr(644,root,root,755)
 %{qt3dir}/include/*
 %{qt3lib}/*.so
+
+#--------------------------------------------------------------
+
+%package -n python-qt3-qscintilla
+Summary: Python qt3 QScintilla bindings
+Group: Development/KDE and Qt
+Requires: python-qt
+Requires: %libqs3
+
+%description -n python-qt3-qscintilla
+Python qt3 QScintilla bindings.
+
+%files -n python-qt3-qscintilla
+%defattr(644,root,root,755)
+%_datadir/sip/qsci
+%qt3dir/qsci
+%py_platsitedir/qsci.so
+
+%endif # with_qt3
 
 #--------------------------------------------------------------
 
@@ -110,6 +137,7 @@ Group: Development/KDE and Qt
 Requires: %libqs4 = %{version}-%{release}
 Provides: %{name}-qt4-devel = %{version}-%{release}
 Obsoletes: %{_lib}qscintilla-qt4_-devel
+Provides: qscintilla-qt4-devel = %{version}-%{release}
 
 %description -n %libqs4dev
 This packages contains the libraries, include and other files
@@ -120,23 +148,6 @@ you can use to develop applications with QScintilla.
 %{qt4dir}/include/*
 %{qt4lib}/*.so
 %{qt4plugins}/designer/*
-
-#--------------------------------------------------------------
-
-%package -n python-qt3-qscintilla
-Summary: Python qt3 QScintilla bindings
-Group: Development/KDE and Qt
-Requires: python-qt
-Requires: %libqs3
-
-%description -n python-qt3-qscintilla
-Python qt3 QScintilla bindings.
-
-%files -n python-qt3-qscintilla
-%defattr(644,root,root,755)
-%_datadir/sip/qsci
-%qt3dir/qsci
-%py_platsitedir/qsci.so
 
 #--------------------------------------------------------------
 
@@ -176,12 +187,13 @@ QScintilla doc.
 %patch0 -p1 -b .libbuild
 
 %build
-# We will build both qt3 and qt4 qscintilla !
+%if %{with_qt3}
 pushd Qt3 
     export QTDIR=%qt3dir
     %{qt3dir}/bin/qmake DESTDIR=%buildroot/%{qt3lib} qscintilla.pro
     %make 
 popd
+%endif
 
 pushd Qt4
     export QTDIR=%qt4dir
@@ -199,7 +211,10 @@ popd
 
 %install
 rm -fr %{buildroot}
-mkdir -p %buildroot/{%qt3lib,%qt4lib}
+mkdir -p %buildroot/%qt4lib
+
+%if %{with_qt3}
+mkdir -p %buildroot/%qt3lib
 pushd Qt3
     make INSTALL_ROOT=%buildroot install
 popd
@@ -212,6 +227,7 @@ pushd Python
     %make 
     make DESTDIR=%buildroot install
 popd
+%endif #with_qt3
 
 pushd Qt4
     make INSTALL_ROOT=%buildroot install
