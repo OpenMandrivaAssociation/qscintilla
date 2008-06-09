@@ -51,8 +51,12 @@ and the current line. Styling choices are more open than with many
 editors, allowing the use of proportional fonts, bold and italics,
 multiple foreground and background colours and multiple fonts.
 
+%if %mdkversion < 200900
 %post -n %libqs3 -p /sbin/ldconfig
+%endif
+%if %mdkversion < 200900
 %postun -n %libqs3 -p /sbin/ldconfig
+%endif
 
 %files -n %libqs3
 %defattr(644,root,root,755)
@@ -119,8 +123,12 @@ and the current line. Styling choices are more open than with many
 editors, allowing the use of proportional fonts, bold and italics,
 multiple foreground and background colours and multiple fonts.
 
+%if %mdkversion < 200900
 %post -n %libqs4 -p /sbin/ldconfig
+%endif
+%if %mdkversion < 200900
 %postun -n %libqs4 -p /sbin/ldconfig
+%endif
 
 %files -n %libqs4
 %defattr(644,root,root,755)
