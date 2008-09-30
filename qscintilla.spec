@@ -4,7 +4,7 @@
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.2
-Release: %mkrel 4
+Release: %mkrel 5
 License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
@@ -146,6 +146,7 @@ Requires: %libqs4 = %{version}-%{release}
 Provides: %{name}-qt4-devel = %{version}-%{release}
 Obsoletes: %{_lib}qscintilla-qt4_-devel
 Provides: qscintilla-qt4-devel = %{version}-%{release}
+Conflicts: %{_lib}qscintilla-qt3_2 <= 2.2-2
 
 %description -n %libqs4dev
 This packages contains the libraries, include and other files
