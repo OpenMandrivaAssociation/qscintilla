@@ -3,8 +3,8 @@
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.2
-Release: %mkrel 5
+Version: 2.3
+Release: %mkrel 1
 License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
@@ -199,21 +199,21 @@ QScintilla doc.
 %if %{with_qt3}
 pushd Qt3 
     export QTDIR=%qt3dir
-    %{qt3dir}/bin/qmake DESTDIR=%buildroot/%{qt3lib} qscintilla.pro
+    %qmake_qt3 DESTDIR=%buildroot/%{qt3lib} qscintilla.pro
     %make 
 popd
 %endif
 
 pushd Qt4
     export QTDIR=%qt4dir
-    %{qt4dir}/bin/qmake DESTDIR=%buildroot/%{qt4lib} qscintilla.pro
+    %qmake_qt4 DESTDIR=%buildroot/%{qt4lib} qscintilla.pro
     %make 
 popd
 
 pushd designer-Qt4
     echo "INCLUDEPATH += ../Qt4" >> designer.pro
     echo "LIBS += -L%buildroot/%{qt4lib}" >> designer.pro
-    %{qt4dir}/bin/qmake designer.pro
+    %qmake_qt4 designer.pro
     make
 popd
 
