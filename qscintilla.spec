@@ -9,7 +9,7 @@ License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
 Patch0: QScintilla-gpl-2.2-libdir.patch
-URL: http://www.riverbankcomputing.co.uk/qscintilla
+URL: http://www.riverbankcomputing.co.uk/software/qscintilla/intro
 %if %{with_qt3}
 BuildRequires: qt3-devel
 BuildRequires: python-qt >= 1:3.16.0
