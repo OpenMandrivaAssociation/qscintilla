@@ -3,12 +3,13 @@
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.3.2
-Release: %mkrel 2
+Version: 2.4
+Release: %mkrel 1
 License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
 Patch0: QScintilla-gpl-2.2-libdir.patch
+Patch1: QScintilla-gpl-2.4-fix-linkage.patch
 URL: http://www.riverbankcomputing.co.uk/software/qscintilla/intro
 %if %{with_qt3}
 BuildRequires: qt3-devel
@@ -194,6 +195,7 @@ QScintilla doc.
 %prep 
 %setup -qn QScintilla-gpl-%{version}
 %patch0 -p1 -b .libbuild
+%patch1 -p0 -b .linkage
 
 %build
 %if %{with_qt3}
