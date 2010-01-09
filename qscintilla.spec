@@ -4,7 +4,7 @@
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.4
-Release: %mkrel 5
+Release: %mkrel 6
 License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
