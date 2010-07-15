@@ -3,7 +3,7 @@
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.4.3
+Version: 2.4.4
 Release: %mkrel 1
 License: GPLv2+
 Group: System/Libraries
@@ -16,7 +16,7 @@ BuildRequires: qt3-devel
 BuildRequires: python-qt >= 1:3.16.0
 %endif # with_qt3
 BuildRequires: qt4-devel >= 2:4.3.1
-BuildRequires: python-sip >= 1:4.7
+BuildRequires: python-sip >= 1:4.7.10
 BuildRequires: python-qt4-devel
 %py_requires -d
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
