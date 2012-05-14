@@ -3,8 +3,8 @@
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.5.1
-Release: %mkrel 2
+Version: 2.6.1
+Release: 1
 License: GPLv2+
 Group: System/Libraries
 Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
@@ -19,7 +19,6 @@ BuildRequires: qt4-devel >= 2:4.3.1
 BuildRequires: python-sip >= 1:4.7.10
 BuildRequires: python-qt4-devel
 BuildRequires: python-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 As well as features found in standard text editing components,
@@ -29,7 +28,7 @@ indicators, code completion and call tips. The selection margin can
 contain markers like those used in debuggers to indicate breakpoints
 and the current line. Styling choices are more open than with many
 editors, allowing the use of proportional fonts, bold and italics,
-multiple foreground and background colours and multiple fonts.
+multiple foreground and background colors and multiple fonts.
 
 #--------------------------------------------------------------
 
@@ -50,14 +49,7 @@ indicators, code completion and call tips. The selection margin can
 contain markers like those used in debuggers to indicate breakpoints
 and the current line. Styling choices are more open than with many
 editors, allowing the use of proportional fonts, bold and italics,
-multiple foreground and background colours and multiple fonts.
-
-%if %mdkversion < 200900
-%post -n %libqs3 -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %libqs3 -p /sbin/ldconfig
-%endif
+multiple foreground and background colors and multiple fonts.
 
 %files -n %libqs3
 %defattr(644,root,root,755)
@@ -122,17 +114,9 @@ indicators, code completion and call tips. The selection margin can
 contain markers like those used in debuggers to indicate breakpoints
 and the current line. Styling choices are more open than with many
 editors, allowing the use of proportional fonts, bold and italics,
-multiple foreground and background colours and multiple fonts.
-
-%if %mdkversion < 200900
-%post -n %libqs4 -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %libqs4 -p /sbin/ldconfig
-%endif
+multiple foreground and background colors and multiple fonts.
 
 %files -n %libqs4
-%defattr(644,root,root,755)
 %attr(755,root,root) %{qt4lib}/*.so.*
 %{qt4dir}/translations/qscintilla*.qm
 
@@ -141,12 +125,11 @@ multiple foreground and background colours and multiple fonts.
 %define libqs4dev %mklibname -d qscintilla-qt4
 
 %package -n %libqs4dev
-Summary: Libraries, include and other files to develop applications with QScintilla for Qt3
+Summary: Development files for QScintilla for Qt3
 Group: Development/KDE and Qt
 Requires: %libqs4 = %{version}-%{release}
-Provides: %{name}-qt4-devel = %{version}-%{release}
-Obsoletes: %{_lib}qscintilla-qt4_-devel
-Provides: qscintilla-qt4-devel = %{version}-%{release}
+Provides: %{name}-qt4-devel = %{EVRD}
+Provides: qscintilla-qt4-devel = %{EVRD}
 Conflicts: %{_lib}qscintilla-qt3_2 <= 2.2-2
 
 %description -n %libqs4dev
@@ -154,7 +137,6 @@ This packages contains the libraries, include and other files
 you can use to develop applications with QScintilla.
 
 %files -n %libqs4dev
-%defattr(644,root,root,755)
 %{qt4dir}/include/*
 %{qt4lib}/*.so
 %{qt4plugins}/designer/*
@@ -166,13 +148,11 @@ Summary: Python qt4 QScintilla bindings
 Group: Development/KDE and Qt
 Requires: python-qt4-core
 Requires: python-qt4-gui
-Requires: %libqs4
 
 %description -n python-qt4-qscintilla
 Python qt4 QScintilla bindings.
 
 %files -n python-qt4-qscintilla 
-%defattr(644,root,root,755)
 %_datadir/sip/PyQt4
 %qt4dir/qsci
 %py_platsitedir/PyQt4/Qsci.so
@@ -257,8 +237,3 @@ pushd Python
     %make 
     make DESTDIR=%buildroot install
 popd
-
-%clean
-rm -rf %{buildroot}
-
-
