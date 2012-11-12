@@ -1,0 +1,11 @@
+--- QScintilla-gpl-2.2/Qt3/qscintilla.pro~	2008-05-22 04:43:34.000000000 +0200
++++ QScintilla-gpl-2.2/Qt3/qscintilla.pro	2008-05-22 04:44:46.000000000 +0200
+@@ -45,7 +45,7 @@
+ # Handle both Qt v4 and v3.
+ target.path = $$[QT_INSTALL_LIBS]
+ isEmpty(target.path) {
+-	target.path = $(QTDIR)/lib
++	target.path = $$[QT_INSTALL_LIBS]
+ }
+ 
+ header.path = $$[QT_INSTALL_HEADERS]
