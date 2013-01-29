@@ -3,11 +3,11 @@
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.5.1
-Release: 5
+Version: 2.7
+Release: 1
 License: GPLv2+
 Group: System/Libraries
-Source0: http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-%version.tar.gz
+Source0: http://switch.dl.sourceforge.net/project/pyqt/QScintilla2/QScintilla-%version/QScintilla-gpl-%version.tar.gz
 Patch0: QScintilla-gpl-2.2-libdir.patch
 Patch1: QScintilla-gpl-2.4-fix-linkage.patch
 URL: http://www.riverbankcomputing.co.uk/software/qscintilla/intro
@@ -198,14 +198,14 @@ pushd Qt3
 popd
 %endif
 
-pushd Qt4
+pushd Qt4Qt5
     export QTDIR=%qt4dir
     %qmake_qt4 DESTDIR=%buildroot/%{qt4lib} qscintilla.pro
     %make 
 popd
 
 pushd designer-Qt4
-    echo "INCLUDEPATH += ../Qt4" >> designer.pro
+    echo "INCLUDEPATH += ../Qt4Qt5" >> designer.pro
     echo "LIBS += -L%buildroot/%{qt4lib}" >> designer.pro
     %qmake_qt4 designer.pro
     make
@@ -232,7 +232,7 @@ pushd Python
 popd
 %endif #with_qt3
 
-pushd Qt4
+pushd Qt4Qt5
     make INSTALL_ROOT=%buildroot install
 popd
 
@@ -244,7 +244,7 @@ pushd Python
     export QTDIR=%qt4dir
     export PATH=%qt4dir/bin:$PATH
     python configure.py \
-        -n ../Qt4 \
+        -n ../Qt4Qt5 \
         -o %buildroot/%{qt4lib} 
     %make 
     make DESTDIR=%buildroot install
