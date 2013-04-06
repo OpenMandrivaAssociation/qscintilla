@@ -1,6 +1,6 @@
 %define with_qt3 0
 %{?_with_qt3: %{expand: %%global with_qt3 1}}
-
+%define debug_package %{nil}
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.7
