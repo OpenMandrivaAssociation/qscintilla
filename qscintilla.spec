@@ -22,7 +22,8 @@ BuildRequires: qt4-devel >= 2:4.3.1
 BuildRequires: python-qt4-devel
 %endif # with qt4
 %if %{with qt5}
-BuildRequires: pkgconfig(Qt5Gui) pkgconfig(Qt5Widgets)
+BuildRequires: pkgconfig(Qt5Gui) pkgconfig(Qt5Widgets) pkgconfig(Qt5Designer)
+BuildRequires: pkgconfig(Qt5PrintSupport) qt5-macros qmake5
 %define qt5dir %{_prefix}/lib/qt5
 %define qt5lib %{qt5dir}/%{_lib}
 %define qt5plugins %{_libdir}/qt5/plugins
