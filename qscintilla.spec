@@ -6,8 +6,8 @@
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.7.2
-Release: 5
+Version: 2.8
+Release: 1
 License: GPLv2+
 Group: System/Libraries
 Source0: http://switch.dl.sourceforge.net/project/pyqt/QScintilla2/QScintilla-%version/QScintilla-gpl-%version.tar.gz
@@ -173,6 +173,7 @@ Python qt4 QScintilla bindings.
 %_datadir/sip/PyQt4
 %qt4dir/qsci
 %py_platsitedir/PyQt4/Qsci.so
+%{_prefix}/lib/qt4/api/python/QScintilla2.api
 %endif
 
 #--------------------------------------------------------------
@@ -321,7 +322,7 @@ pushd Python
         -n ../Qt3 \
         -o %buildroot/%{qt3lib} 
     %make 
-    make DESTDIR=%buildroot install
+    make INSTALL_ROOT=%buildroot install
 popd
 %endif #with qt3
 
@@ -343,7 +344,7 @@ pushd Python
         -o %buildroot/%{qt4lib} 
     sed -i -e 's,-lpthread,-lpthread -lpython2.7,g' Makefile
     %make 
-    make DESTDIR=%buildroot install
+    make INSTALL_ROOT=%buildroot install
 popd
 %endif
 
@@ -366,7 +367,7 @@ pushd Python
         -o %buildroot/%{qt5lib} 
     sed -i -e 's,-lpthread,-lpthread -lpython2.7,g' Makefile
     %make 
-    make DESTDIR=%buildroot install
+    make INSTALL_ROOT=%buildroot install
 popd
 %else
 rm -rf %buildroot%{_datadir}/qt5/qsci
