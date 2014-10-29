@@ -30,8 +30,8 @@ BuildRequires: pkgconfig(Qt5PrintSupport) qt5-macros qmake5
 %define qt5plugins %{_libdir}/qt5/plugins
 %endif
 BuildRequires: python-sip >= 1:4.7.10
-BuildRequires: python-devel
-
+BuildRequires: 	pkgconfig(python3)
+BuildRequires:	pkgconfig(python)
 %description
 As well as features found in standard text editing components,
 QScintilla includes features especially useful when editing and
