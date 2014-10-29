@@ -3,11 +3,12 @@
 %bcond_without qt5
 %bcond_with pyqt5
 %define debug_package %{nil}
+%define _disable_ld_no_undefined 1
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.8
-Release: 3
+Version: 2.8.4
+Release: 1
 License: GPLv2+
 Group: System/Libraries
 Source0: http://switch.dl.sourceforge.net/project/pyqt/QScintilla2/QScintilla-%version/QScintilla-gpl-%version.tar.gz
@@ -154,7 +155,9 @@ you can use to develop applications with QScintilla.
 %defattr(644,root,root,755)
 %{qt4dir}/include/*
 %{qt4lib}/*.so
+%{qt4dir}/mkspecs/features/qscintilla2.prf
 %{qt4plugins}/designer/*
+%{qt4lib}/*.prl
 
 #--------------------------------------------------------------
 
@@ -173,7 +176,6 @@ Python qt4 QScintilla bindings.
 %_datadir/sip/PyQt4
 %qt4dir/qsci
 %py_platsitedir/PyQt4/Qsci.so
-%{_prefix}/lib/qt4/api/python/QScintilla2.api
 %endif
 
 #--------------------------------------------------------------
@@ -222,7 +224,9 @@ you can use to develop applications with QScintilla.
 %defattr(655,root,root,755)
 %{_includedir}/qt5/Qsci
 %{qt5lib}/*.so
+%{qt5lib}/*.prl
 %{qt5plugins}/designer/*
+%{_datadir}/qt5/mkspecs/features/qscintilla2.prf
 
 #--------------------------------------------------------------
 
