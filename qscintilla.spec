@@ -157,7 +157,6 @@ you can use to develop applications with QScintilla.
 %{qt4lib}/*.so
 %{qt4dir}/mkspecs/features/qscintilla2.prf
 %{qt4plugins}/designer/*
-%{qt4lib}/*.prl
 
 #--------------------------------------------------------------
 
@@ -224,7 +223,6 @@ you can use to develop applications with QScintilla.
 %defattr(655,root,root,755)
 %{_includedir}/qt5/Qsci
 %{qt5lib}/*.so
-%{qt5lib}/*.prl
 %{qt5plugins}/designer/*
 %{_datadir}/qt5/mkspecs/features/qscintilla2.prf
 
