@@ -1,6 +1,6 @@
 %bcond_with qt3
 %bcond_without qt4
-%bcond_without qt5
+%bcond_with qt5
 %bcond_with pyqt5
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
@@ -8,7 +8,7 @@
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.8.4
-Release: 1
+Release: 2
 License: GPLv2+
 Group: System/Libraries
 Source0: http://switch.dl.sourceforge.net/project/pyqt/QScintilla2/QScintilla-%version/QScintilla-gpl-%version.tar.gz
