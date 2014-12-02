@@ -103,7 +103,7 @@ Python qt3 QScintilla bindings.
 
 %files -n python-qt3-qscintilla
 %defattr(644,root,root,755)
-%_datadir/sip/qsci
+%_datadir/python-sip/qsci
 %qt3dir/qsci
 %py_platsitedir/qsci.so
 
@@ -172,7 +172,7 @@ Python qt4 QScintilla bindings.
 
 %files -n python-qt4-qscintilla 
 %defattr(644,root,root,755)
-%_datadir/sip/PyQt4
+%_datadir/python-sip/PyQt4
 %qt4dir/qsci
 %py_platsitedir/PyQt4/Qsci.so
 %endif
@@ -241,7 +241,7 @@ Python qt5 QScintilla bindings.
 
 %files -n python-qt5-qscintilla 
 %defattr(655,root,root,755)
-%_datadir/sip/PyQt5
+%_datadir/python-sip/PyQt5
 %qt5dir/qsci
 %py_platsitedir/PyQt5/Qsci.so
 %endif
@@ -343,6 +343,7 @@ pushd Python
     export PATH=%qt4dir/bin:$PATH
     python configure.py \
         -n ../Qt4 \
+	--pyqt-sipdir=/usr/share/python-sip/PyQt4 \
         -o %buildroot/%{qt4lib} 
     sed -i -e 's,-lpthread,-lpthread -lpython2.7,g' Makefile
     %make 
