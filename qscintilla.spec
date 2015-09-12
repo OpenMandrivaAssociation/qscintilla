@@ -8,7 +8,7 @@
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Version: 2.8.4
-Release: 4
+Release: 5
 License: GPLv2+
 Group: System/Libraries
 Source0: http://switch.dl.sourceforge.net/project/pyqt/QScintilla2/QScintilla-%version/QScintilla-gpl-%version.tar.gz
