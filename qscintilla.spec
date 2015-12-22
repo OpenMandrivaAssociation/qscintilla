@@ -3,6 +3,7 @@
 %bcond_without pyqt5
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
+%define _disable_lto 1
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
