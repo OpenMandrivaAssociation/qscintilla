@@ -1,23 +1,17 @@
-%bcond_with qt3
 %bcond_without qt4
-%bcond_with qt5
-%bcond_with pyqt5
+%bcond_without qt5
+%bcond_without pyqt5
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
 
 Name: qscintilla
 Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.8.4
-Release: 5
+Version: 2.9.1
+Release: 1
 License: GPLv2+
 Group: System/Libraries
-Source0: http://switch.dl.sourceforge.net/project/pyqt/QScintilla2/QScintilla-%version/QScintilla-gpl-%version.tar.gz
-Patch0: QScintilla-gpl-2.2-libdir.patch
+Source0: http://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-%{version}/QScintilla-gpl-%{version}.tar.gz
 URL: http://www.riverbankcomputing.co.uk/software/qscintilla/intro
-%if %{with qt3}
-BuildRequires: qt3-devel
-BuildRequires: python-qt >= 1:3.16.0
-%endif # with qt3
 %if %{with qt4}
 BuildRequires: qt4-devel >= 2:4.3.1
 BuildRequires: python-qt4-devel
@@ -41,73 +35,6 @@ contain markers like those used in debuggers to indicate breakpoints
 and the current line. Styling choices are more open than with many
 editors, allowing the use of proportional fonts, bold and italics,
 multiple foreground and background colours and multiple fonts.
-
-#--------------------------------------------------------------
-
-%if %{with qt3}
-
-%define libqs3 %mklibname qscintilla-qt3_ 2
-
-%package -n %libqs3
-Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Group: System/Libraries
-Obsoletes: qscintilla-translations
-
-%description -n %libqs3
-As well as features found in standard text editing components,
-QScintilla includes features especially useful when editing and
-debugging source code. These include support for syntax styling, error
-indicators, code completion and call tips. The selection margin can
-contain markers like those used in debuggers to indicate breakpoints
-and the current line. Styling choices are more open than with many
-editors, allowing the use of proportional fonts, bold and italics,
-multiple foreground and background colours and multiple fonts.
-
-%files -n %libqs3
-%defattr(644,root,root,755)
-%attr(755,root,root) %{qt3lib}/*.so.*
-%{qt3dir}/translations/qscintilla*.qm
-
-#--------------------------------------------------------------
-
-%define libqs3dev %mklibname -d qscintilla-qt3
-
-%package -n %libqs3dev
-Summary: Libraries, headers and other files to develop with QScintilla for Qt3
-Group: Development/KDE and Qt
-Requires: %libqs3 = %{version}-%{release}
-Provides: %{name}-devel = %{version}-%{release}
-Provides: %{name}-qt3-devel = %{version}-%{release}
-Provides: qscintilla-qt3-devel = %{version}-%{release}
-Obsoletes: %{_lib}qscintilla-qt3_-devel
-
-%description -n %libqs3dev
-This packages contains the libraries, include and other files
-you can use to develop applications with QScintilla.
-
-%files -n %libqs3dev
-%defattr(644,root,root,755)
-%{qt3dir}/include/*
-%{qt3lib}/*.so
-
-#--------------------------------------------------------------
-
-%package -n python-qt3-qscintilla
-Summary: Python qt3 QScintilla bindings
-Group: Development/KDE and Qt
-Requires: python-qt
-Requires: %libqs3
-
-%description -n python-qt3-qscintilla
-Python qt3 QScintilla bindings.
-
-%files -n python-qt3-qscintilla
-%defattr(644,root,root,755)
-%_datadir/python-sip/qsci
-%qt3dir/qsci
-%py_platsitedir/qsci.so
-
-%endif # with qt3
 
 #--------------------------------------------------------------
 
@@ -267,13 +194,6 @@ QScintilla doc.
 %apply_patches
 
 %build
-%if %{with qt3}
-pushd Qt3 
-    export QTDIR=%qt3dir
-    %qmake_qt3 DESTDIR=%buildroot/%{qt3lib} qscintilla.pro
-    %make 
-popd
-%endif
 
 %if %{with qt4}
 cp -a Qt4Qt5 Qt4
@@ -312,22 +232,6 @@ popd
 %endif
 
 %install
-%if %{with qt3}
-mkdir -p %buildroot/%qt3lib
-pushd Qt3
-    make INSTALL_ROOT=%buildroot install
-popd
-
-pushd Python
-    export QTDIR=%qt3dir
-    python configure.py -p 3 \
-        -n ../Qt3 \
-        -o %buildroot/%{qt3lib} 
-    %make 
-    make INSTALL_ROOT=%buildroot install
-popd
-%endif #with qt3
-
 %if %{with qt4}
 mkdir -p %buildroot/%qt4lib
 pushd Qt4
