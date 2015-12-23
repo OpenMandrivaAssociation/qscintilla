@@ -85,7 +85,7 @@ you can use to develop applications with QScintilla.
 %files -n %libqs4dev
 %defattr(644,root,root,755)
 %{qt4dir}/include/*
-%{qt4lib}/libqscintilla.so
+%{qt4lib}/libqscintilla2.so
 %{qt4dir}/mkspecs/features/qscintilla2.prf
 %{qt4plugins}/designer/*
 
