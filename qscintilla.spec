@@ -1,6 +1,6 @@
 %bcond_without qt4
 %bcond_without qt5
-%bcond_without pyqt5
+%bcond_with pyqt5
 %define debug_package %{nil}
 %define _disable_ld_no_undefined 1
 %define _disable_lto 1
@@ -13,6 +13,7 @@ License: GPLv2+
 Group: System/Libraries
 Source0: http://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-%{version}/QScintilla-gpl-%{version}.tar.gz
 URL: http://www.riverbankcomputing.co.uk/software/qscintilla/intro
+Patch1:	QScintilla-gpl-2.9.1-qt5.patch
 %if %{with qt4}
 BuildRequires: qt4-devel >= 2:4.3.1
 BuildRequires: python-qt4-devel
@@ -21,8 +22,10 @@ BuildRequires: python-qt4-devel
 BuildRequires: pkgconfig(Qt5Gui) pkgconfig(Qt5Widgets) pkgconfig(Qt5Designer)
 BuildRequires: pkgconfig(Qt5PrintSupport) qt5-macros qmake5
 %define qt5dir %{_prefix}/lib/qt5
-%define qt5lib %{qt5dir}/%{_lib}
 %define qt5plugins %{_libdir}/qt5/plugins
+%endif
+%if %{with pyqt5}
+BuildRequires: python-qt5-devel
 %endif
 BuildRequires: python-sip >= 1:4.7.10
 BuildRequires: 	pkgconfig(python3)
@@ -59,7 +62,7 @@ multiple foreground and background colours and multiple fonts.
 
 %files -n %libqs4
 %defattr(644,root,root,755)
-%attr(755,root,root) %{qt4lib}/*.so.*
+%attr(755,root,root) %{qt4lib}/libqscintilla2.so.*
 %{qt4dir}/translations/qscintilla*.qm
 
 #--------------------------------------------------------------
@@ -82,7 +85,7 @@ you can use to develop applications with QScintilla.
 %files -n %libqs4dev
 %defattr(644,root,root,755)
 %{qt4dir}/include/*
-%{qt4lib}/*.so
+%{qt4lib}/libqscintilla.so
 %{qt4dir}/mkspecs/features/qscintilla2.prf
 %{qt4plugins}/designer/*
 
@@ -127,7 +130,7 @@ multiple foreground and background colours and multiple fonts.
 
 %files -n %libqs5
 %defattr(655,root,root,755)
-%attr(755,root,root) %{qt5lib}/*.so.*
+%attr(755,root,root) %{_libdir}/libqscintilla2-qt5.so.*
 %{_datadir}/qt5/translations/qscintilla*.qm
 
 #--------------------------------------------------------------
@@ -150,9 +153,9 @@ you can use to develop applications with QScintilla.
 %files -n %libqs5dev
 %defattr(655,root,root,755)
 %{_includedir}/qt5/Qsci
-%{qt5lib}/*.so
+%{_libdir}/libqscintilla2-qt5.so
 %{qt5plugins}/designer/*
-%{_datadir}/qt5/mkspecs/features/qscintilla2.prf
+%{_libdir}/qt5/mkspecs/features/qscintilla2.prf
 
 #--------------------------------------------------------------
 
@@ -169,7 +172,7 @@ Python qt5 QScintilla bindings.
 
 %files -n python-qt5-qscintilla 
 %defattr(655,root,root,755)
-%_datadir/python-sip/PyQt5
+%_datadir/sip/PyQt5
 %qt5dir/qsci
 %py_platsitedir/PyQt5/Qsci.so
 %endif
@@ -199,85 +202,84 @@ QScintilla doc.
 %if %{with qt4}
 cp -a Qt4Qt5 Qt4
 cp -a designer-Qt4Qt5 designer-Qt4
+cp -a Python Python-Qt4
+
+export QTDIR=%qt4dir
+export PATH=%qt4dir/bin:$PATH
 
 pushd Qt4
-    export QTDIR=%qt4dir
-    %qmake_qt4 DESTDIR=%buildroot/%{qt4lib} qscintilla.pro
+    %qmake_qt4 qscintilla.pro
     %make 
 popd
 
 pushd designer-Qt4
-    echo "INCLUDEPATH += ../Qt4" >> designer.pro
-    echo "LIBS += -L%buildroot/%{qt4lib}" >> designer.pro
-    %qmake_qt4 designer.pro
+    %qmake_qt4 designer.pro INCLUDEPATH+=../Qt4 LIBS+=-L../Qt4
+    sed -i -e 's,-lpthread,-lpthread -lqscintilla2,g' Makefile
     %make
 popd
+
+pushd Python-Qt4
+    python configure.py \
+        --qsci-incdir=../Qt4 \
+        --pyqt-sipdir=/usr/share/python-sip/PyQt4 \
+        --qsci-libdir=../Qt4
+    sed -i -e 's,-lpthread,-lpthread -lpython3.4m -lqscintilla2,g' Makefile
+    %make
+popd
+
 %endif
 
 %if %{with qt5}
 cp -a Qt4Qt5 Qt5
 cp -a designer-Qt4Qt5 designer-Qt5
+cp -a Python Python-Qt5
+export QTDIR=%qt5dir
 
 pushd Qt5
-    export QTDIR=%qt5dir
-    %qmake_qt5 DESTDIR=%buildroot/%{qt5lib} qscintilla.pro
+    %qmake_qt5 qscintilla.pro
     %make 
 popd
 
 pushd designer-Qt5
-    echo "INCLUDEPATH += ../Qt5" >> designer.pro
-    echo "LIBS += -L%buildroot/%{qt5lib}" >> designer.pro
-    %qmake_qt5 designer.pro
+    %qmake_qt5 designer.pro INCLUDEPATH+=../Qt5 LIBS+=-L../Qt5
+    sed -i -e 's,-lpthread,-lpthread -lqscintilla2-qt5,g' Makefile
+    %make
+popd
+
+%if %{with pyqt5}
+pushd Python-Qt5
+    python configure.py \
+        --qsci-incdir=../Qt5 \
+        --pyqt-sipdir=/usr/share/sip/PyQt5 \
+        --qsci-libdir=../Qt5 \
+	--pyqt=PyQt5
+    sed -i -e 's,-lpthread,-lpthread -lpython3.4m -lqscintilla2-qt5,g' Makefile
     %make
 popd
 %endif
 
+%endif
+
 %install
 %if %{with qt4}
-mkdir -p %buildroot/%qt4lib
-pushd Qt4
-    make INSTALL_ROOT=%buildroot install
-popd
 
-pushd designer-Qt4
-    make INSTALL_ROOT=%buildroot install
-popd
+make -C Qt4 INSTALL_ROOT=%buildroot install
 
-pushd Python
-    export QTDIR=%qt4dir
-    export PATH=%qt4dir/bin:$PATH
-    python configure.py \
-        -n ../Qt4 \
-	--pyqt-sipdir=/usr/share/python-sip/PyQt4 \
-        -o %buildroot/%{qt4lib} 
-    sed -i -e 's,-lpthread,-lpthread -lpython2.7,g' Makefile
-    %make 
-    make INSTALL_ROOT=%buildroot install
-popd
+make -C designer-Qt4 INSTALL_ROOT=%buildroot install
+
+make -C Python-Qt4 INSTALL_ROOT=%buildroot install
+
 %endif
 
 %if %{with qt5}
-mkdir -p %buildroot/%qt5lib
-pushd Qt5
-    make INSTALL_ROOT=%buildroot install
-popd
+make -C Qt5 INSTALL_ROOT=%buildroot install
 
-pushd designer-Qt5
-    make INSTALL_ROOT=%buildroot install
-popd
+make -C designer-Qt5 INSTALL_ROOT=%buildroot install
 
 %if %{with pyqt5}
-pushd Python
-    export QTDIR=%qt5dir
-    export PATH=%qt5dir/bin:$PATH
-    python configure.py \
-        -n ../Qt5 \
-        -o %buildroot/%{qt5lib} 
-    sed -i -e 's,-lpthread,-lpthread -lpython2.7,g' Makefile
-    %make 
-    make INSTALL_ROOT=%buildroot install
-popd
+    make -C Python-Qt5 INSTALL_ROOT=%buildroot install
 %else
 rm -rf %buildroot%{_datadir}/qt5/qsci
 %endif
+
 %endif
