@@ -1,5 +1,2 @@
-removed_sources:
-  QScintilla-gpl-2.8.4.tar.gz: 7e15c261a7c1842f3a75e4878a880ab667224494
-  QScintilla-gpl-2.8.tar.gz: 3edf9d476d4e6af0706a4d33401667a38e3a697e
 sources:
-  QScintilla-gpl-2.9.1.tar.gz: 63f367af50fd73a8815e4ff4596932c7dad12e41
+  QScintilla_gpl-2.10.tar.gz: 922d1cb4378738fa5ecfc4c248fe19a5bb28b27b
