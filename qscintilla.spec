@@ -13,6 +13,7 @@ Group: System/Libraries
 Source0: https://www.riverbankcomputing.com/static/Downloads/QScintilla/QScintilla_gpl-%{version}.tar.gz
 URL: http://www.riverbankcomputing.co.uk/software/qscintilla/intro
 BuildRequires: pkgconfig(Qt5Gui) pkgconfig(Qt5Widgets)
+BuildRequires: cmake(Qt5Designer)
 BuildRequires: pkgconfig(Qt5PrintSupport) qt5-macros qmake5
 %define qt5dir %{_prefix}/lib/qt5
 %define qt5plugins %{_libdir}/qt5/plugins
