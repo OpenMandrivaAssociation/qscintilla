@@ -1,28 +1,39 @@
-%global optflags %{optflags} -std=gnu++14
-%bcond_with pyqt5
 %define debug_package %{nil}
-%define _disable_ld_no_undefined 1
-%define _disable_lto 1
 
-Name: qscintilla
-Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Version: 2.11.1
-Release: 1
-License: GPLv2+
-Group: System/Libraries
-Source0: https://www.riverbankcomputing.com/static/Downloads/QScintilla/QScintilla_gpl-%{version}.tar.gz
-URL: http://www.riverbankcomputing.co.uk/software/qscintilla/intro
-BuildRequires: pkgconfig(Qt5Gui) pkgconfig(Qt5Widgets)
-BuildRequires: cmake(Qt5Designer)
-BuildRequires: pkgconfig(Qt5PrintSupport) qt5-macros qmake5
-%define qt5dir %{_prefix}/lib/qt5
-%define qt5plugins %{_libdir}/qt5/plugins
-%if %{with pyqt5}
-BuildRequires: python-qt5-devel
+%define qt5dir		%{_prefix}/lib/qt5
+%define qt5plugins	%{_libdir}/qt5/plugins
+%define qt5include	%{_includedir}/qt5
+
+%define libqs5		%mklibname qscintilla_qt5 13
+%define libqs5dev	%mklibname -d qscintilla_qt5
+
+%bcond_without pyqt5
+%bcond_with py2qt5
+
+Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
+Name:		qscintilla
+Version:	2.11.1
+Release:	1
+License:	GPLv2+
+Group:		System/Libraries
+Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/QScintilla_gpl-%{version}.tar.gz
+#Source0:	https://downloads.sourceforge.net/pyqt/QScintilla2/QScintilla-%{version}/QScintilla_gpl-%{version}.tar.gz
+URL:		http://www.riverbankcomputing.co.uk/software/qscintilla/intro
+BuildRequires:	qmake5
+BuildRequires:	qt5-macros
+BuildRequires:	pkgconfig(Qt5Gui)
+BuildRequires:	pkgconfig(Qt5PrintSupport)
+BuildRequires:	pkgconfig(Qt5Widgets)
+%if %with pyqt5
+BuildRequires:	pkgconfig(python3)
+BuildRequires:	python-qt5-devel
+BuildRequires:	python-sip
 %endif
-BuildRequires: python-sip >= 1:4.7.10
-BuildRequires: 	pkgconfig(python3)
-BuildRequires:	pkgconfig(python)
+%if %with py2qt5
+BuildRequires:	pkgconfig(python2)
+BuildRequires:	python2-qt5-devel
+BuildRequires:	python2-sip
+%endif
 
 %description
 As well as features found in standard text editing components,
@@ -36,12 +47,9 @@ multiple foreground and background colours and multiple fonts.
 
 #--------------------------------------------------------------
 
-%define libqs5 %mklibname qscintilla_qt5 13
-
 %package -n %libqs5
-Summary: Port to Qt of Neil Hodgson's Scintilla C++ editor class
-Group: System/Libraries
-Obsoletes: qscintilla-translations
+Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
+Group:		System/Libraries
 
 %description -n %libqs5
 As well as features found in standard text editing components,
@@ -53,30 +61,25 @@ and the current line. Styling choices are more open than with many
 editors, allowing the use of proportional fonts, bold and italics,
 multiple foreground and background colours and multiple fonts.
 
-%files -n %libqs5
-%defattr(655,root,root,755)
-%attr(755,root,root) %{_libdir}/libqscintilla2_qt5.so.*
-%{_datadir}/qt5/translations/qscintilla*.qm
+%files -n %libqs5 -f %{name}.lang
+%{_libdir}/libqscintilla2_qt5.so.*
+#% {_datadir}/qt5/translations/qscintilla*.qm
 
 #--------------------------------------------------------------
 
-%define libqs5dev %mklibname -d qscintilla_qt5
-
 %package -n %libqs5dev
-Summary: Libraries, include and other files to develop with QScintilla for Qt5
-Group: Development/KDE and Qt
-Requires: %libqs5 = %{version}-%{release}
-Provides: %{name}-qt5-devel = %{version}-%{release}
-Obsoletes: %{_lib}qscintilla-qt5_-devel
-Provides: qscintilla-qt5-devel = %{version}-%{release}
-Conflicts: %{_lib}qscintilla-qt3_2 <= 2.2-2
+Summary:	Libraries, include and other files to develop with QScintilla for Qt5
+Group:		Development/KDE and Qt
+Requires:	%libqs5 = %{version}-%{release}
+Provides:	%{name}-qt5-devel = %{version}-%{release}
+Provides:	qscintilla-qt5-devel = %{version}-%{release}
+#Obsoletes:	%{_lib}qscintilla-qt5_-devel
 
 %description -n %libqs5dev
 This packages contains the libraries, include and other files
 you can use to develop applications with QScintilla.
 
 %files -n %libqs5dev
-%defattr(655,root,root,755)
 %{_includedir}/qt5/Qsci
 %{_libdir}/libqscintilla2_qt5.so
 %{qt5plugins}/designer/*
@@ -86,75 +89,123 @@ you can use to develop applications with QScintilla.
 
 %if %{with pyqt5}
 %package -n python-qt5-qscintilla
-Summary: Python qt5 QScintilla bindings
-Group: Development/KDE and Qt
-Requires: python-qt5-core
-Requires: python-qt5-gui
-Requires: %libqs5
+Summary:	Python qt5 QScintilla bindings
+Group:		Development/KDE and Qt
+Requires:	python-qt5-core
+Requires:	python-qt5-gui
+Requires:	%libqs5
 
 %description -n python-qt5-qscintilla
 Python qt5 QScintilla bindings.
 
-%files -n python-qt5-qscintilla 
-%defattr(655,root,root,755)
+%files -n python-qt5-qscintilla
 %_datadir/sip/PyQt5
-%qt5dir/qsci
+%{_qt5_datadir}/qsci/
 %py_platsitedir/PyQt5/Qsci.so
 %py_platsitedir/PyQt5/Qsci.pyi
 %endif
 
 #--------------------------------------------------------------
 
+%if %{with py2qt5}
+%package -n python2-qt5-qscintilla
+Summary:	Python qt5 QScintilla bindings
+Group:		Development/KDE and Qt
+Requires:	python2-qt5-core
+Requires:	python2-qt5-gui
+Requires:	%libqs5
+
+%description -n python2-qt5-qscintilla
+Python qt5 QScintilla bindings.
+
+%files -n python2-qt5-qscintilla
+%_datadir/sip/PyQt5
+%{_qt5_datadir}/qsci/
+%py2_platsitedir/PyQt5/Qsci.so
+%py2_platsitedir/PyQt5/Qsci.pyi
+%endif
+
+#--------------------------------------------------------------
+
 %package doc
-Summary: QScintilla docs
-Group: Development/KDE and Qt
+Summary:	QScintilla docs
+Group:		Development/KDE and Qt
 
 %description doc
 QScintilla doc.
 
 %files doc
 %defattr(644,root,root,755)
-%doc NEWS README doc	
+%doc NEWS README doc
 
 #--------------------------------------------------------------
 
-%prep 
+%prep
 %setup -qn QScintilla_gpl-%{version}
-%apply_patches
+%autopatch -p1
 
 %build
 export QTDIR=%qt5dir
 
-pushd Qt4Qt5
+cp -a Qt4Qt5 Qt5
+cp -a designer-Qt4Qt5 designer-Qt5
+cp -a Python Python-Qt5
+cp -a Python Python2-Qt5
+
+pushd Qt5
 	%qmake_qt5 qscintilla.pro
-	%make 
+	%make_build
 popd
 
-pushd designer-Qt4Qt5
-	%qmake_qt5 designer.pro INCLUDEPATH+=../Qt4Qt5 LIBS+=-L../Qt4Qt5
-	sed -i -e 's,-lpthread,-lpthread -lqscintilla2_qt5,g' Makefile
-	%make
+# (fedora) set QMAKEFEATURES to ensure just built lib/feature is found
+QMAKEFEATURES=`pwd`/Qt5/features; export QMAKEFEATURES
+
+pushd designer-Qt5
+	%qmake_qt5 designer.pro INCLUDEPATH+=../Qt5 LIBS+=-L../Qt5
+	%make_build
 popd
 
 %if %{with pyqt5}
-pushd Python
+pushd Python-Qt5
+	INCLUDEPATH+="{qt5include}/QtWdgets %{qt5include}/QtPrintSupport" \
 	python configure.py \
-		--qsci-incdir=../Qt4Qt5 \
-		--pyqt-sipdir=/usr/share/sip/PyQt5 \
-		--qsci-libdir=../Qt4Qt5 \
-	--pyqt=PyQt5
-	sed -i -e 's,-lpthread,-lpthread -lpython3.7m -lqscintilla2_qt5,g' Makefile
-	%make
+		--pyqt=PyQt5 \
+		--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+		--qsci-incdir=../Qt5 \
+		--qsci-libdir=../Qt5 \
+		--qmake=%{_bindir}/qmake-qt5 \
+		--no-dist-info
+	%make_build
+popd
+%endif
+
+%if %{with py2qt5}
+pushd Python2-Qt5
+	INCLUDEPATH="%{qt5include}/QtWdgets %{qt5include}/QtPrintSupport" \
+	python2 configure.py \
+		--pyqt=PyQt5 \
+		--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+		--qsci-incdir=../Qt5 \
+		--qsci-libdir=../Qt5 \
+		--qmake=%{_bindir}/qmake-qt5 \
+		--no-dist-info
+	%make_build
 popd
 %endif
 
 %install
-make -C Qt4Qt5 INSTALL_ROOT=%buildroot install
-
-make -C designer-Qt4Qt5 INSTALL_ROOT=%buildroot install
-
+%make_install -C Qt5  INSTALL_ROOT=%buildroot
+%make_install -C designer-Qt5  INSTALL_ROOT=%buildroot
 %if %{with pyqt5}
-	make -C Python INSTALL_ROOT=%buildroot install
-%else
+	%make_install -C Python-Qt5 INSTALL_ROOT=%buildroot install
+%endif
+%if %{with py2qt5}
+	%make_install -C Python2-Qt5 INSTALL_ROOT=%buildroot install
+%endif
+%if !%{with pyqt5} && !%{with py2qt5}
 	rm -rf %buildroot%{_datadir}/qt5/qsci
 %endif
+
+# locales
+%find_lang %{name} --with-qt
+
