@@ -24,6 +24,7 @@ BuildRequires:	qt5-macros
 BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(Qt5PrintSupport)
 BuildRequires:	pkgconfig(Qt5Widgets)
+BuildRequires:	pkgconfig(Qt5Designer)
 %if %with pyqt5
 BuildRequires:	pkgconfig(python3)
 BuildRequires:	python-qt5-devel
