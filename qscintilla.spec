@@ -16,8 +16,7 @@ Version:	2.11.1
 Release:	2
 License:	GPLv2+
 Group:		System/Libraries
-Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/QScintilla_gpl-%{version}.tar.gz
-#Source0:	https://downloads.sourceforge.net/pyqt/QScintilla2/QScintilla-%{version}/QScintilla_gpl-%{version}.tar.gz
+Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_gpl-%{version}.tar.gz
 URL:		http://www.riverbankcomputing.co.uk/software/qscintilla/intro
 BuildRequires:	qmake5
 BuildRequires:	qt5-macros
