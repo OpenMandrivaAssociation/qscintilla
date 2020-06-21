@@ -170,7 +170,7 @@ pushd Python-Qt5
 	INCLUDEPATH+="{qt5include}/QtWdgets %{qt5include}/QtPrintSupport" \
 	python configure.py \
 		--pyqt=PyQt5 \
-		--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+		--pyqt-sipdir=%{python3_sitearch}/PyQt5 \
 		--qsci-incdir=../Qt5 \
 		--qsci-libdir=../Qt5 \
 		--qmake=%{_bindir}/qmake-qt5 \
@@ -185,6 +185,7 @@ pushd Python2-Qt5
 	python2 configure.py \
 		--pyqt=PyQt5 \
 		--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+		--pyqt-sipdir=%{python2_sitearch}/PyQt5 \
 		--qsci-incdir=../Qt5 \
 		--qsci-libdir=../Qt5 \
 		--qmake=%{_bindir}/qmake-qt5 \
