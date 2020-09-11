@@ -17,14 +17,17 @@ License:	GPLv2+
 Group:		System/Libraries
 Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla-%{version}.tar.gz
 URL:		http://www.riverbankcomputing.co.uk/software/qscintilla/intro
+BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	qmake5
 BuildRequires:	qt5-macros
 BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(Qt5PrintSupport)
 BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5Designer)
+BuildRequires:	pkgconfig(Qt5Xml)
 %if %with pyqt5
 BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(dbus-python)
 BuildRequires:	qt5-qtbase-macros
 BuildRequires:	python-qt5-devel
 BuildRequires:	python-sip
@@ -170,10 +173,11 @@ cd Python-Qt5
 	INCLUDEPATH+="{qt5include}/QtWdgets %{qt5include}/QtPrintSupport" \
 	python configure.py \
 		--pyqt=PyQt5 \
-		--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+		--pyqt-sipdir=%{py_platsitedir}/PyQt5 \
 		--qsci-incdir=../Qt5 \
 		--qsci-libdir=../Qt5 \
 		--qmake="%{_qt5_bindir}/qmake" \
+		--sip=%{_bindir}/sip5
 		--no-dist-info
 	%make_build
 cd -
@@ -184,10 +188,11 @@ cd Python2-Qt5
 	INCLUDEPATH="%{qt5include}/QtWdgets %{qt5include}/QtPrintSupport" \
 	python2 configure.py \
 		--pyqt=PyQt5 \
-		--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+		--pyqt-sipdir=%{py_platsitedir}/PyQt5 \
 		--qsci-incdir=../Qt5 \
 		--qsci-libdir=../Qt5 \
 		--qmake="%{_qt5_bindir}/qmake" \
+		--sip=%{_bindir}/sip5
 		--no-dist-info
 	%make_build
 cd -
