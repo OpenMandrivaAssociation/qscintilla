@@ -151,46 +151,50 @@ cp -a Python Python-Qt5
 cp -a Python Python2-Qt5
 %endif
 
+PATH=%{_qt5_bindir}:$PATH; export PATH
+
 cd Qt5
-	%qmake_qt5 qscintilla.pro
-	%make_build
+    %qmake_qt5 qscintilla.pro
+    %make_build
 cd -
 
 # (fedora) set QMAKEFEATURES to ensure just built lib/feature is found
 QMAKEFEATURES=$(pwd)/Qt5/features; export QMAKEFEATURES
 
 cd designer-Qt5
-	%qmake_qt5 designer.pro INCLUDEPATH+=../Qt5 LIBS+=-L../Qt5
-	%make_build
+    %qmake_qt5 designer.pro INCLUDEPATH+=../Qt5 LIBS+=-L../Qt5
+    %make_build
 cd -
 
 %if %{with pyqt5}
 cd Python-Qt5
-	INCLUDEPATH+="%{_qt5_includedir}/QtWdgets %{_qt5_includedir}/QtPrintSupport" \
-	python configure.py \
-		--pyqt=PyQt5 \
-		--pyqt-sipdir=%{py_platsitedir}/PyQt5 \
-		--qsci-incdir=../Qt5 \
-		--qsci-libdir=../Qt5 \
-		--qmake="%{_qt5_bindir}/qmake" \
-		--sip=%{_bindir}/sip5
-		--no-dist-info
-	%make_build
+    INCLUDEPATH+="%{_qt5_includedir}/QtWdgets %{_qt5_includedir}/QtPrintSupport" \
+    python configure.py \
+	--pyqt=PyQt5 \
+	--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+	--qsci-incdir=../Qt5 \
+	--qsci-libdir=../Qt5 \
+	--qmake="%{_qt5_bindir}/qmake" \
+	--sip=%{_bindir}/sip5
+	--no-dist-info \
+	--verbose \
+	--debug
+    %make_build
 cd -
 %endif
 
 %if %{with py2qt5}
 cd Python2-Qt5
-	INCLUDEPATH="%{_qt5_includedir}/QtWdgets %{_qt5_includedir}/QtPrintSupport" \
-	python2 configure.py \
-		--pyqt=PyQt5 \
-		--pyqt-sipdir=%{py_platsitedir}/PyQt5 \
-		--qsci-incdir=../Qt5 \
-		--qsci-libdir=../Qt5 \
-		--qmake="%{_qt5_bindir}/qmake" \
-		--sip=%{_bindir}/sip5
-		--no-dist-info
-	%make_build
+    INCLUDEPATH="%{_qt5_includedir}/QtWdgets %{_qt5_includedir}/QtPrintSupport" \
+    python2 configure.py \
+	--pyqt=PyQt5 \
+	--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
+	--qsci-incdir=../Qt5 \
+	--qsci-libdir=../Qt5 \
+	--qmake="%{_qt5_bindir}/qmake" \
+	--sip=%{_bindir}/sip5
+	--no-dist-info
+    %make_build
 cd -
 %endif
 
@@ -198,13 +202,13 @@ cd -
 %make_install -C Qt5 INSTALL_ROOT=%{buildroot}
 %make_install -C designer-Qt5  INSTALL_ROOT=%{buildroot}
 %if %{with pyqt5}
-	%make_install -C Python-Qt5 INSTALL_ROOT=%{buildroot} install
+    %make_install -C Python-Qt5 INSTALL_ROOT=%{buildroot} install
 %endif
 %if %{with py2qt5}
-	%make_install -C Python2-Qt5 INSTALL_ROOT=%{buildroot} install
+    %make_install -C Python2-Qt5 INSTALL_ROOT=%{buildroot} install
 %endif
 %if !%{with pyqt5} && !%{with py2qt5}
-	rm -rf %{buildroot}%{_datadir}/qt5/qsci
+    rm -rf %{buildroot}%{_datadir}/qt5/qsci
 %endif
 
 # locales
