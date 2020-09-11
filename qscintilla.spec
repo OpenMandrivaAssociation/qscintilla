@@ -142,8 +142,7 @@ QScintilla doc.
 #--------------------------------------------------------------
 
 %prep
-%setup -qn QScintilla_gpl-%{version}
-%autopatch -p1
+%autosetup -n QScintilla-%{version} -p1
 
 %build
 cp -a Qt4Qt5 Qt5
