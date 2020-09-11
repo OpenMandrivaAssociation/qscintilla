@@ -175,7 +175,7 @@ cd Python-Qt5
 	--qsci-incdir=../Qt5 \
 	--qsci-libdir=../Qt5 \
 	--qmake="%{_qt5_bindir}/qmake" \
-	--sip=%{_bindir}/sip5
+	--sip=%{_bindir}/sip5 \
 	--no-dist-info \
 	--verbose \
 	--debug
