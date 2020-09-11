@@ -83,6 +83,9 @@ Summary:	Python qt5 QScintilla bindings
 Group:		Development/KDE and Qt
 Requires:	python-qt5-core
 Requires:	python-qt5-gui
+Requires:	python-qt5
+Requires:	python-sip
+Requires:	python-sip-qt5
 Requires:	%{libqs5}
 
 %description -n python-qt5-qscintilla
