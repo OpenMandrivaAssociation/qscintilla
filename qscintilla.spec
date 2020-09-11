@@ -1,8 +1,5 @@
 %define debug_package %{nil}
 
-%define qt5plugins %{_libdir}/qt5/plugins
-%define qt5include %{_includedir}/qt5
-
 %define libqs5 %mklibname qscintilla_qt5 13
 %define libqs5dev %mklibname -d qscintilla_qt5
 
@@ -19,7 +16,7 @@ Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{versio
 URL:		http://www.riverbankcomputing.co.uk/software/qscintilla/intro
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	qmake5
-BuildRequires:	qt5-macros
+BuildRequires:	qt5-qtbase-macros
 BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(Qt5PrintSupport)
 BuildRequires:	pkgconfig(Qt5Widgets)
@@ -28,7 +25,6 @@ BuildRequires:	pkgconfig(Qt5Xml)
 %if %with pyqt5
 BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(dbus-python)
-BuildRequires:	qt5-qtbase-macros
 BuildRequires:	python-qt5-devel
 BuildRequires:	python-sip
 %endif
@@ -86,7 +82,7 @@ you can use to develop applications with QScintilla.
 %files -n %{libqs5dev}
 %{_includedir}/qt5/Qsci
 %{_libdir}/libqscintilla2_qt5.so
-%{qt5plugins}/designer/*
+%{_qt5_plugindir}/designer/*
 %{_libdir}/qt5/mkspecs/features/qscintilla2.prf
 
 #--------------------------------------------------------------
@@ -170,7 +166,7 @@ cd -
 
 %if %{with pyqt5}
 cd Python-Qt5
-	INCLUDEPATH+="{qt5include}/QtWdgets %{qt5include}/QtPrintSupport" \
+	INCLUDEPATH+="%{_qt5_includedir}/QtWdgets %{_qt5_includedir}/QtPrintSupport" \
 	python configure.py \
 		--pyqt=PyQt5 \
 		--pyqt-sipdir=%{py_platsitedir}/PyQt5 \
@@ -185,7 +181,7 @@ cd -
 
 %if %{with py2qt5}
 cd Python2-Qt5
-	INCLUDEPATH="%{qt5include}/QtWdgets %{qt5include}/QtPrintSupport" \
+	INCLUDEPATH="%{_qt5_includedir}/QtWdgets %{_qt5_includedir}/QtPrintSupport" \
 	python2 configure.py \
 		--pyqt=PyQt5 \
 		--pyqt-sipdir=%{py_platsitedir}/PyQt5 \
