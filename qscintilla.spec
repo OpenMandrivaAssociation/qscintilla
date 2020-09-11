@@ -26,6 +26,7 @@ BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(dbus-python)
 BuildRequires:	python-qt5-devel
 BuildRequires:	python-sip
+BuildRequires:	python-sip-qt5
 
 %description
 As well as features found in standard text editing components,
