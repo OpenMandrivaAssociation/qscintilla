@@ -1,0 +1,11 @@
+diff -up QScintilla_src-2.12.1/designer/designer.pro.omv~ QScintilla_src-2.12.1/designer/designer.pro
+--- QScintilla_src-2.12.1/designer/designer.pro.omv~	2021-05-24 21:36:16.829519261 +0200
++++ QScintilla_src-2.12.1/designer/designer.pro	2021-05-24 21:36:31.369716956 +0200
+@@ -18,5 +18,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
+ HEADERS = qscintillaplugin.h
+ SOURCES = qscintillaplugin.cpp
+ 
++LIBS += -L../src -lqscintilla2_qt5
++
+ target.path = $$[QT_INSTALL_PLUGINS]/designer
+ INSTALLS += target

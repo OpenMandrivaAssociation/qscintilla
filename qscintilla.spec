@@ -1,19 +1,15 @@
-%define debug_package %{nil}
-
 %define libqs5 %mklibname qscintilla_qt5 13
 %define libqs5dev %mklibname -d qscintilla_qt5
 
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
-Version:	2.11.6
+Version:	2.12.1
 Release:	1
 License:	GPLv2+
 Group:		System/Libraries
-Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla-%{version}.tar.gz
+Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_src-%{version}.tar.gz
+Patch0:		qscintilla-2.12.1-no-underlinking.patch
 URL:		http://www.riverbankcomputing.co.uk/software/qscintilla/intro
-# (tpg) Patches from Fedora
-Patch100:	QScintilla_gpl-2.10.7-sip_check.patch
-Patch101:	QScintilla_gpl-2.11-QUrl.patch
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	qmake5
 BuildRequires:	qt5-qtbase-macros
@@ -92,10 +88,10 @@ Requires:	%{libqs5}
 Python qt5 QScintilla bindings.
 
 %files -n python-qt5-qscintilla
-%{_datadir}/sip/PyQt5
-%{_qt5_datadir}/qsci/
-%{py_platsitedir}/PyQt5/Qsci.so
-%{py_platsitedir}/PyQt5/Qsci.pyi
+%{_libdir}/python*/site-packages/PyQt5/Qsci.abi3.so
+%{_libdir}/python*/site-packages/PyQt5/bindings/Qsci
+%{_libdir}/python*/site-packages/QScintilla-*.dist-info
+%{_datadir}/qt5/qsci/api/python
 
 #--------------------------------------------------------------
 
@@ -113,42 +109,34 @@ QScintilla doc.
 #--------------------------------------------------------------
 
 %prep
-%autosetup -n QScintilla-%{version} -p1
+%autosetup -n QScintilla_src-%{version} -p1
 
 %build
 PATH=%{_qt5_bindir}:$PATH; export PATH
 
-cd Qt4Qt5
-    %qmake_qt5 qscintilla.pro
-    %make_build
+cd src
+	%qmake_qt5 qscintilla.pro
+	%make_build
 cd -
 
 # (fedora) set QMAKEFEATURES to ensure just built lib/feature is found
 QMAKEFEATURES=$(pwd)/Qt4Qt5/features; export QMAKEFEATURES
 
-cd designer-Qt4Qt5
-    %qmake_qt5 designer.pro INCLUDEPATH+=../Qt4Qt5 LIBS+=-L../Qt4Qt5
-    %make_build
+cd designer
+	%qmake_qt5 designer.pro INCLUDEPATH+=../src LIBS+=-L../src
+	%make_build
 cd -
 
 cd Python
-    INCLUDEPATH+="%{_qt5_includedir}/QtWdgets %{_qt5_includedir}/QtPrintSupport" \
-    python configure.py \
-	--pyqt=PyQt5 \
-	--pyqt-sipdir=%{_datadir}/sip/PyQt5 \
-	--qsci-incdir=../Qt4Qt5 \
-	--qsci-libdir=../Qt4Qt5 \
-	--qmake="%{_qt5_bindir}/qmake" \
-	--sip=%{_bindir}/sip5 \
-	--no-dist-info \
-	--verbose
-    %make_build
+	ln -s pyproject-qt5.toml pyproject.toml
+	sip-build --qsci-library-dir `pwd`/../src --qsci-include-dir `pwd`/../src --qsci-features-dir `pwd`/../src/features --no-make
+	%make_build -C build
 cd -
 
 %install
-%make_install -C Qt4Qt5 INSTALL_ROOT=%{buildroot}
-%make_install -C designer-Qt4Qt5  INSTALL_ROOT=%{buildroot}
-%make_install -C Python INSTALL_ROOT=%{buildroot} install
+%make_install -C src INSTALL_ROOT=%{buildroot}
+%make_install -C designer INSTALL_ROOT=%{buildroot}
+%make_install -C Python/build INSTALL_ROOT=%{buildroot} install
 
 # locales
 %find_lang %{name} --with-qt
