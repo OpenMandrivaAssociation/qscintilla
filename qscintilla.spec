@@ -20,6 +20,7 @@ BuildRequires:	pkgconfig(Qt5Designer)
 BuildRequires:	pkgconfig(Qt5Xml)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	pkgconfig(dbus-python)
+BuildRequires:	python-qt-builder
 BuildRequires:	python-qt5-devel
 BuildRequires:	python-sip
 BuildRequires:	python-sip-qt5
