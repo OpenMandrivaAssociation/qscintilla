@@ -3,7 +3,7 @@
 
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
-Version:	2.13.2
+Version:	2.13.3
 Release:	1
 License:	GPLv2+
 Group:		System/Libraries
