@@ -167,6 +167,8 @@ Requires:	%{libqs6} = %{EVRD}
 Python qt5 QScintilla bindings.
 
 %files -n python-qt6-qscintilla
+%{_libdir}/python*/site-packages/PyQt6/Qsci.abi3.so
+%{_libdir}/python*/site-packages/PyQt6/bindings/Qsci
 %{_libdir}/python*/site-packages/PyQt6_QScintilla-*.dist-info
 %{_qtdir}/qsci
 
@@ -231,7 +233,7 @@ qmake-qt6 designer.pro INCLUDEPATH+=../src LIBS+=-L../src
 cd ../Python
 rm -rf build
 ln -sf pyproject-qt6.toml pyproject.toml
-sip-build --qsci-library-dir `pwd`/../src --qsci-include-dir `pwd`/../src --qsci-features-dir `pwd`/../src/features --no-make
+sip-build --qsci-library-dir `pwd`/../src --qsci-include-dir `pwd`/../src --qsci-features-dir `pwd`/../src/features --no-make --qmake=%{_bindir}/qmake-qt6
 %make_build -C build
 %make_install -C build INSTALL_ROOT=%{buildroot}
 cd ..
