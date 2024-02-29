@@ -9,7 +9,7 @@
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
 Version:	2.14.1
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		System/Libraries
 Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_src-%{version}.tar.gz
@@ -137,7 +137,7 @@ multiple foreground and background colours and multiple fonts.
 %package -n %{libqs6dev}
 Summary:	Libraries, include and other files to develop with QScintilla for Qt6
 Group:		Development/KDE and Qt
-Requires:	%{libqs5} = %{version}-%{release}
+Requires:	%{libqs6} = %{version}-%{release}
 Provides:	%{name}-qt6-devel = %{version}-%{release}
 Provides:	qscintilla-qt6-devel = %{version}-%{release}
 

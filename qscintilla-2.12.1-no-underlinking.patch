@@ -5,7 +5,7 @@ diff -up QScintilla_src-2.12.1/designer/designer.pro.omv~ QScintilla_src-2.12.1/
  HEADERS = qscintillaplugin.h
  SOURCES = qscintillaplugin.cpp
  
-+LIBS += -L../src -lqscintilla2_qt5
++LIBS += -L../src -lqscintilla2_qt$${QT_MAJOR_VERSION}
 +
  target.path = $$[QT_INSTALL_PLUGINS]/designer
  INSTALLS += target
