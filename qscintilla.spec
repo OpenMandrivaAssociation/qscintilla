@@ -9,7 +9,7 @@
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
 Version:	2.14.1
-Release:	5
+Release:	6
 License:	GPLv2+
 Group:		System/Libraries
 Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_src-%{version}.tar.gz
@@ -99,7 +99,8 @@ Summary:	Python qt5 QScintilla bindings
 Group:		Development/KDE and Qt
 Requires:	python-qt5-core
 Requires:	python-qt5-gui
-Requires:	python-qt5
+Requires:	python-qt5-widgets
+Requires:	python-qt5-printsupport
 Requires:	python-sip
 Requires:	python-sip-qt5
 Requires:	%{libqs5} = %{EVRD}
@@ -158,7 +159,8 @@ Summary:	Python qt6 QScintilla bindings
 Group:		Development/KDE and Qt
 Requires:	python-qt6-core
 Requires:	python-qt6-gui
-Requires:	python-qt6
+Requires:	python-qt6-widgets
+Requires:	python-qt6-printsupport
 Requires:	python-sip
 Requires:	python-sip-qt6
 Requires:	%{libqs6} = %{EVRD}
