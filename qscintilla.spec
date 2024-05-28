@@ -9,7 +9,7 @@
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
 Version:	2.14.1
-Release:	7
+Release:	8
 License:	GPLv2+
 Group:		System/Libraries
 Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_src-%{version}.tar.gz
@@ -35,6 +35,7 @@ BuildRequires:	qmake-qt6
 BuildRequires:	pkgconfig(Qt6Core)
 BuildRequires:	pkgconfig(Qt6DBus)
 BuildRequires:	pkgconfig(Qt6Gui)
+BuildRequires:	pkgconfig(Qt6OpenGL)
 BuildRequires:	pkgconfig(Qt6PrintSupport)
 BuildRequires:	pkgconfig(Qt6Widgets)
 BuildRequires:	pkgconfig(Qt6Designer)
