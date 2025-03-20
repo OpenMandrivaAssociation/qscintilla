@@ -9,12 +9,12 @@
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
 Version:	2.14.1
-Release:	10
+Release:	11
 License:	GPLv2+
 Group:		System/Libraries
 Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_src-%{version}.tar.gz
 Patch0:		qscintilla-2.12.1-no-underlinking.patch
-URL:		https://www.riverbankcomputing.co.uk/software/qscintilla/intro
+URL:		https://www.riverbankcomputing.com/software/qscintilla/intro
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	qmake5
 BuildRequires:	qt5-qtbase-macros
