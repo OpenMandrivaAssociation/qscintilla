@@ -9,7 +9,7 @@
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
 Version:	2.14.1
-Release:	13
+Release:	14
 License:	GPLv2+
 Group:		System/Libraries
 Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_src-%{version}.tar.gz
@@ -112,7 +112,7 @@ Python qt5 QScintilla bindings.
 %files -n python-qt5-qscintilla
 %{_libdir}/python*/site-packages/PyQt5/Qsci.abi3.so
 %{_libdir}/python*/site-packages/PyQt5/bindings/Qsci
-%{_libdir}/python*/site-packages/QScintilla-*.dist-info
+%{_libdir}/python*/site-packages/qscintilla-*.dist-info
 %{_datadir}/qt5/qsci/api/python
 
 #--------------------------------------------------------------
@@ -172,7 +172,7 @@ Python qt5 QScintilla bindings.
 %files -n python-qt6-qscintilla
 %{_libdir}/python*/site-packages/PyQt6/Qsci.abi3.so
 %{_libdir}/python*/site-packages/PyQt6/bindings/Qsci
-%{_libdir}/python*/site-packages/PyQt6_QScintilla-*.dist-info
+%{_libdir}/python*/site-packages/pyqt6_qscintilla-*.dist-info
 %{_qtdir}/qsci
 
 #--------------------------------------------------------------
