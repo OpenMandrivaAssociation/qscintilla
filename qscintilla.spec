@@ -9,7 +9,7 @@
 Summary:	Port to Qt of Neil Hodgson's Scintilla C++ editor class
 Name:		qscintilla
 Version:	2.14.1
-Release:	15
+Release:	16
 License:	GPLv2+
 Group:		System/Libraries
 Source0:	https://www.riverbankcomputing.com/static/Downloads/QScintilla/%{version}/QScintilla_src-%{version}.tar.gz
@@ -24,12 +24,12 @@ BuildRequires:	pkgconfig(Qt5PrintSupport)
 BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5Designer)
 BuildRequires:	pkgconfig(Qt5Xml)
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(dbus-python)
-BuildRequires:	python-qt-builder
-BuildRequires:	python-qt5-devel
-BuildRequires:	python-sip
-BuildRequires:	python-sip-qt5
+BuildRequires:	python%{pyver}dist(pyqt-builder) >= 1.20
+BuildRequires:	python-qt5-devel >= 5.15.11-3
+BuildRequires:	python-sip >= 6.17
+BuildRequires:	python-sip-qt5 >= 12.20.0
 %if %{with qt6}
 BuildRequires:	cmake(Qt6)
 BuildRequires:	qmake-qt6
@@ -41,8 +41,8 @@ BuildRequires:	pkgconfig(Qt6PrintSupport)
 BuildRequires:	pkgconfig(Qt6Widgets)
 BuildRequires:	pkgconfig(Qt6Designer)
 BuildRequires:	pkgconfig(Qt6Xml)
-BuildRequires:	python-qt6-devel
-BuildRequires:	python-sip-qt6
+BuildRequires:	python-qt6-devel >= 6.10.1-3
+BuildRequires:	python-sip-qt6 >= 13.13.0
 %endif
 
 %description
@@ -99,19 +99,19 @@ you can use to develop applications with QScintilla.
 %package -n python-qt5-qscintilla
 Summary:	Python qt5 QScintilla bindings
 Group:		Development/KDE and Qt
-Requires:	python-qt5-core
-Requires:	python-qt5-gui
-Requires:	python-qt5-widgets
-Requires:	python-qt5-printsupport
-Requires:	python-sip
-Requires:	python-sip-qt5
+Requires:	python-qt5-core >= 5.15.11-3
+Requires:	python-qt5-gui >= 5.15.11-3
+Requires:	python-qt5-widgets >= 5.15.11-3
+Requires:	python-qt5-printsupport >= 5.15.11-3
+Requires:	python-sip >= 6.17
+Requires:	python-sip-qt5 >= 12.20.0
 Requires:	%{libqs5} = %{EVRD}
 
 %description -n python-qt5-qscintilla
 Python qt5 QScintilla bindings.
 
 %files -n python-qt5-qscintilla
-%{_libdir}/python*/site-packages/PyQt5/Qsci.abi3.so
+%{_libdir}/python*/site-packages/PyQt5/Qsci.abi3*.so
 %{_libdir}/python*/site-packages/PyQt5/bindings/Qsci
 %{_libdir}/python*/site-packages/qscintilla-*.dist-info
 %{_datadir}/qt5/qsci/api/python
@@ -159,19 +159,19 @@ you can use to develop applications with QScintilla.
 %package -n python-qt6-qscintilla
 Summary:	Python qt6 QScintilla bindings
 Group:		Development/KDE and Qt
-Requires:	python-qt6-core
-Requires:	python-qt6-gui
-Requires:	python-qt6-widgets
-Requires:	python-qt6-printsupport
-Requires:	python-sip
-Requires:	python-sip-qt6
+Requires:	python-qt6-core >= 6.10.1-3
+Requires:	python-qt6-gui >= 6.10.1-3
+Requires:	python-qt6-widgets >= 6.10.1-3
+Requires:	python-qt6-printsupport >= 6.10.1-3
+Requires:	python-sip >= 6.17
+Requires:	python-sip-qt6 >= 13.13.0
 Requires:	%{libqs6} = %{EVRD}
 
 %description -n python-qt6-qscintilla
 Python qt5 QScintilla bindings.
 
 %files -n python-qt6-qscintilla
-%{_libdir}/python*/site-packages/PyQt6/Qsci.abi3.so
+%{_libdir}/python*/site-packages/PyQt6/Qsci.abi3*.so
 %{_libdir}/python*/site-packages/PyQt6/bindings/Qsci
 %{_libdir}/python*/site-packages/pyqt6_qscintilla-*.dist-info
 %{_qtdir}/qsci
